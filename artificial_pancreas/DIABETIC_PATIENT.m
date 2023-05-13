@@ -15,28 +15,24 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
     % INIT FIS TREE
     [AP, CCR, ~, BGR_R, BGA_R] = AP_FIST(weight_);
 
-
     % SET PATH
-    version_path = strcat('results/', 'v', version_);
-    test_id = strcat(diet_, '_', char(randi([48 57],1,3)), char(randi([65 90],1,2))); 
+    version_path = strcat('db/results/', 'v', version_);
+    test_id = strcat(diet_, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
     path = strcat(version_path, '/', test_id);
     mkdir(path);
 
+    % OPEN DB
+    database = strcat('db/diets/', diet_, '.xlsx');
 
-    % OPEN BD
-    database = strcat('db/', diet_, '.xlsx');
     if isstring(database)
         database = readtable(database, "VariableNamingRule", "preserve");
     end
 
-
     % EVALUATE FIS
     options = evalfisOptions('NumSamplePoints', 1000);
 
-
     % CALCULATE TIMESTAMP
     TS = database.Time(2) - database.Time(1);
-
 
     % RANDOMIZE test_data(1:3) VALUES
     if randomize_
@@ -48,98 +44,63 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
         database.BGA(3) = (database.BGR(3) - database.BGR(2)) / TS;
     end
 
-    
     % TEST FISTREE
     for i = 3:size(database, 1)
 
-        % evaluate fis tree (insulin dose)
+        % evaluate fis tree
         eval = evalfis(AP, [database.BGL(i) database.BGR(i) database.BGA(i)], options);
 
-        % logging current insulin dose into blood glucose
+        % Logging current insulin dose into blood glucose
         database.Insulin(i) = eval;
 
-        % - Insulin absorption time (mins / TS)
-        IAT = floor((rand(1) * (55 - 65) + 66) / 5);
+        % Insulin Absorption Time (between 56 and 66)
+        IAT = floor((rand(1) * (-10) + 66) / 5);
 
-        % - total insulin absorbed (mg/dL)
+        % Total Insulin Absorbed (mg/dL)
         TIA = database.Insulin(i) * 50;
 
-        % - TIA distributed within IAT (mg/dL/min/TS)
+        % - TIA distributed within IAT (mg/dL)/(min/TS)
         TIA_T = TIA / IAT;
 
         for j = i:i + IAT - 1
-
             if j < size(database, 1)
-
                 if isnan(database.BGL(j + 1))
                     database.BGL(j + 1) = 0;
                 end
-
-                database.BGL(j + 1) = ...
-                    database.BGL(j + 1) - TIA_T;
+                database.BGL(j + 1) = database.BGL(j + 1) - TIA_T;
             end
-
         end
 
         % logging next BGL, BGR, BGA
         if i < size(database, 1)
             database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-2) + 1);
-
             bgr = (database.BGL(i + 1) - database.BGL(i)) / TS;
             bga = (bgr - database.BGR(i)) / TS;
-
-            if bgr > max(BGR_R)
-                mf = [AP.FIS(1).Inputs(2).MembershipFunctions.Name];
-                AP.FIS(1) = update_io(AP.FIS(1), "Input", 2, "BG_RATE", [min(BGR_R) bgr], mf);
-                BGR_R = [min(BGR_R) bgr];
-            elseif bgr < min(BGR_R)
-                mf = [AP.FIS(1).Inputs(2).MembershipFunctions.Name];
-                AP.FIS(1) = update_io(AP.FIS(1), "Input", 2, "BG_RATE", [bgr max(BGR_R)], mf);
-                BGR_R = [bgr max(BGR_R)];
-            end
-
-            if bga > max(BGA_R)
-                mf = [AP.FIS(2).Inputs(2).MembershipFunctions.Name];
-                AP.FIS(2) = update_io(AP.FIS(2), "Input", 2, "BG_ACCEL", [min(BGA_R) bga], mf);
-                BGA_R = [min(BGA_R) bga];
-            elseif bga < min(BGA_R)
-                mf = [AP.FIS(2).Inputs(2).MembershipFunctions.Name];
-                AP.FIS(2) = update_io(AP.FIS(2), "Input", 2, "BG_ACCEL", [bga max(BGA_R)], mf);
-                BGA_R = [bga max(BGA_R)];
-            end
-
             database.BGR(i + 1) = bgr;
             database.BGA(i + 1) = bga;
         end
 
         % logging Carbs into BGL
         if database.Carbs(i) > 0
-
-            % - total glucose absorbed (mg/dL)
+            % Total Glucose Absorbed (mg/dL)
             TGA = (database.Carbs(i) / CCR) * 50;
-
-            % - TGA normally distributed (mg/dL/min)
+            % TGA normally distributed (mg/dL/min)
             [ds, CAT] = cho_distribution(TGA);
 
             for j = i:(i + CAT - 1)
-
                 if j < size(database, 1)
-
                     if isnan(database.BGL(j + 1))
                         database.BGL(j + 1) = 0;
                     end
-
-                    database.BGL(j + 1) = ...
-                        database.BGL(j + 1) + ds(j - i + 1);
-
+                    database.BGL(j + 1) = database.BGL(j + 1) + ds(j - i + 1);
                 end
-
             end
-
         end
 
+        % pause(1)
     end
 
+    
     % SUMMARISING RESULTS
     database.("Patient's weight")(1) = weight_;
     database.CHO_TOTAL(1) = sum(database.Carbs);
@@ -185,7 +146,7 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
     title('Blood Glucose Levels Over 24hrs')
 
     % SAVE FIGURES
-    saveas(fig, append(path, '/BGL_ID_24hr'), 'png');
+    saveas(fig, append(path, '/BGL_INSULIN_24hr'), 'png');
     saveas(fig1, append(path, '/BGL_24hr'), 'png');
 end
 

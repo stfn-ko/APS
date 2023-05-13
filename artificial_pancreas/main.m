@@ -48,6 +48,7 @@ set(0, 'DefaultFigureVisible', 'off')
 
 % run sim
 DIABETIC_PATIENT(weight, "norm", version, randomize)
+DIABETIC_PATIENT(weight, "highCHO", version, randomize)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              MAIN FILE END                              %
