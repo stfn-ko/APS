@@ -1,0 +1,186 @@
+html {
+  background: #0a0a0a;
+  color: white;
+  font-size: 4em;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  display: flex;
+  padding: 1em 0 1em 0;
+  align-items: center;
+  flex-direction: column;
+}
+
+.BGL {
+  margin: 1.5em;
+}
+
+.BGL .container {
+  width: 40vw;
+  height: 40vw;
+}
+
+.BGL .container .arrow {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  background: linear-gradient(45deg, #0a0a0a 70%, #ffffff);
+}
+
+.BGL .container .circle {
+  top: -100%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  position: relative;
+  background: #0a0a0a;
+  align-items: center;
+  border-radius: 100%;
+  flex-direction: column;
+  justify-content: center;
+  box-shadow: 0 0 2em #ffb3b3;
+}
+
+.BGL .circle .number {
+  font-size: 2em;
+  font-weight: 500;
+}
+
+.BGL .circle .measure {
+  font-size: 0.7em;
+  font-weight: 500;
+}
+
+.AVG,
+.TIR {
+  gap: 0.6em;
+  width: 70%;
+  padding: 1em;
+  display: flex;
+  margin-top: 1em;
+  border-radius: 50px;
+  flex-direction: column;
+  background: linear-gradient(212.18deg, #ffffff1f 0%, #d9d9d905 100%);
+}
+
+.AVG .date {
+  font-size: 0.5em;
+}
+
+.AVG .header,
+.TIR .container .header {
+  font-size: 0.7em;
+}
+
+.AVG .container {
+  gap: 0.4em;
+  display: flex;
+  align-items: baseline;
+}
+
+.AVG .container .number {
+  font-size: 2em;
+  font-weight: 800;
+}
+
+.AVG .container .measure {
+  color: #ffffff50;
+  font-weight: 600;
+}
+
+.AVG .bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.AVG .bottom .sd,
+.AVG .bottom .gmi {
+  gap: 0.2em;
+  display: flex;
+  flex-direction: column;
+}
+
+.AVG .bottom .sd .container .number,
+.AVG .bottom .gmi .container .number {
+  font-size: 1em;
+}
+
+.AVG .bottom .sd .container .measure,
+.AVG .bottom .gmi .container .measure {
+  font-size: 0.6em;
+}
+
+.AVG .bottom .container {
+  gap: 0.4em;
+}
+
+.TIR .container .states .high,
+.TIR .container .states .in-range,
+.TIR .container .states .low {
+  gap: 0.4em;
+  display: flex;
+  flex-direction: column;
+}
+
+.TIR .container .states .text {
+  display: flex;
+  margin-top: 0.6em;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+
+.TIR .container .states .text .percent {
+  color: #ffffff50;
+  font-size: 0.6em;
+}
+
+.TIR .container .states .bar {
+  width: 100%;
+  height: 0.6em;
+}
+
+.TIR .container .states .bar .total {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  border-radius: 30px;
+  background: #45445930;
+  justify-content: space-evenly;
+}
+
+.TIR .container .states .bar .total .delimiter {
+  height: 8px;
+  width: 8px;
+  background: rgba(255, 255, 255, 0.136);
+  border-radius: 100%;
+}
+
+.TIR .container .states .bar .actual {
+  top: -0.6em;
+  display: flex;
+  height: inherit;
+  position: relative;
+  border-radius: 30px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.TIR .container .states .bar .actual .index {
+  width: 8px;
+  height: 50%;
+  margin-right: 15px;
+  border-radius: 30px;
+  background: white;
+}
+
+#highDataBar {
+  background: linear-gradient(180deg, #ffd572 0%, #febd38 100%);
+}
+#inRangeDataBar {
+  background: linear-gradient(180deg, #99ffa3 0%, #68ee76 100%);
+}
+#lowDataBar {
+  background: linear-gradient(180deg, #fe6c6c 0%, #fe464b 100%);
+}

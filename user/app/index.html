@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Patient</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="BGL">
+      <div class="container">
+        <div class="arrow" id="bgRate"></div>
+        <div class="circle">
+          <div class="number" id="bglData"></div>
+          <div class="measure">mg/dL</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="GRAPH"></div>
+
+    <div class="AVG">
+      <div class="date" id="timeStamp"></div>
+      <div class="top">
+        <div class="header">Average Glucose Level</div>
+        <div class="container">
+          <div class="number" id="avgData"></div>
+          <div class="measure">mg/dL</div>
+        </div>
+      </div>
+      <div class="bottom">
+        <div class="sd">
+          <div class="header">Standard Deviation</div>
+          <div class="container">
+            <div class="number" id="sdData"></div>
+            <div class="measure">mg/dL</div>
+          </div>
+        </div>
+        <div class="gmi">
+          <div class="header">GMI</div>
+          <div class="container">
+            <div class="number" id="gmiData"></div>
+            <div class="measure">%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="TIR">
+      <div class="container">
+        <div class="header">Time in range</div>
+        <div class="states">
+          <div class="high">
+            <div class="text">
+              <div class="header">High</div>
+              <div class="percent" id="highData"></div>
+            </div>
+            <div class="bar">
+              <div class="total">
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+              </div>
+              <div class="actual" id="highDataBar">
+                <div class="index"></div>
+              </div>
+            </div>
+          </div>
+          <div class="in-range">
+            <div class="text">
+              <div class="header">In range</div>
+              <div class="percent" id="inRangeData"></div>
+            </div>
+            <div class="bar">
+              <div class="total">
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+              </div>
+              <div class="actual" id="inRangeDataBar">
+                <div class="index"></div>
+              </div>
+            </div>
+          </div>
+          <div class="low">
+            <div class="text">
+              <div class="header">Low</div>
+              <div class="percent" id="lowData"></div>
+            </div>
+            <div class="bar">
+              <div class="total">
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+                <div class="delimiter"></div>
+              </div>
+              <div class="actual" id="lowDataBar">
+                <div class="index"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script src="./main.js"></script>
