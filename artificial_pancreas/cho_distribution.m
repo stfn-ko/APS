@@ -40,5 +40,4 @@ function [ds_tr, CAT_] = cho_distribution(TGA_)
     end
 
     ds_tr(1:CAT_) = mean / 100 * ds(1:CAT_);
-    %checksum = sum(ds_tr);
 end

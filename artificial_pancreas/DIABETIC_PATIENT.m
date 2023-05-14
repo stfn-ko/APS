@@ -13,7 +13,7 @@
 function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
 
     % INIT FIS TREE
-    [AP, CCR, ~, BGR_R, BGA_R] = AP_FIST(weight_);
+    [AP, CCR, ~, ~, ~] = AP_FIST(weight_);
 
     % SET PATH
     version_path = strcat('db/results/', 'v', version_);
@@ -50,34 +50,36 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
         % evaluate fis tree
         eval = evalfis(AP, [database.BGL(i) database.BGR(i) database.BGA(i)], options);
 
-        % Logging current insulin dose into blood glucose
+        % Logging current insulin dose into databse
         database.Insulin(i) = eval;
 
-        % Insulin Absorption Time (between 56 and 66)
-        IAT = floor((rand(1) * (-10) + 66) / 5);
+        % Insulin Absorption Time (between 56 and 126)
+        absorption_time = floor((rand(1) * (-70) + 126) / 5);
 
         % Total Insulin Absorbed (mg/dL)
-        TIA = database.Insulin(i) * 50;
+        total_insulin = database.Insulin(i) * 50;
 
-        % - TIA distributed within IAT (mg/dL)/(min/TS)
-        TIA_T = TIA / IAT;
+        absorption_rate = total_insulin / absorption_time;
 
-        for j = i:i + IAT - 1
+        for j = i:i + absorption_time - 1
+
             if j < size(database, 1)
+
                 if isnan(database.BGL(j + 1))
                     database.BGL(j + 1) = 0;
                 end
-                database.BGL(j + 1) = database.BGL(j + 1) - TIA_T;
+
+                database.BGL(j + 1) = database.BGL(j + 1) - absorption_rate;
             end
+
         end
 
         % logging next BGL, BGR, BGA
         if i < size(database, 1)
+            % add noise
             database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-2) + 1);
-            bgr = (database.BGL(i + 1) - database.BGL(i)) / TS;
-            bga = (bgr - database.BGR(i)) / TS;
-            database.BGR(i + 1) = bgr;
-            database.BGA(i + 1) = bga;
+            database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / TS;
+            database.BGA(i + 1) = (database.BGR(i + 1) - database.BGR(i)) / TS;
         end
 
         % logging Carbs into BGL
@@ -88,19 +90,23 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
             [ds, CAT] = cho_distribution(TGA);
 
             for j = i:(i + CAT - 1)
+
                 if j < size(database, 1)
+
                     if isnan(database.BGL(j + 1))
                         database.BGL(j + 1) = 0;
                     end
+
                     database.BGL(j + 1) = database.BGL(j + 1) + ds(j - i + 1);
                 end
+
             end
+
         end
 
         % pause(1)
     end
 
-    
     % SUMMARISING RESULTS
     database.("Patient's weight")(1) = weight_;
     database.CHO_TOTAL(1) = sum(database.Carbs);

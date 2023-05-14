@@ -22,9 +22,9 @@ TOTAL BGL INCREASE FROM MEAL = (CHO / CCR) * 50;
 
 To set custom carbs intake (optional):
 @EX: test_data = cho_intake(
-            dbname, 
-            [50 50 50 50 50], 
-            [40 240 440 640 840], 
+            dbname,
+            [50 50 50 50 50],
+            [40 240 440 640 840],
             "overwrite"
         );
 
@@ -39,16 +39,16 @@ To run for all databases
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % setup user
-weight = 82;
-version = '11.3';
-randomize = false;
+weight = 42;
+version = '12.0';
 
 % setup fig display off
 set(0, 'DefaultFigureVisible', 'off')
 
 % run sim
-DIABETIC_PATIENT(weight, "norm", version, randomize)
-DIABETIC_PATIENT(weight, "highCHO", version, randomize)
+%DIABETIC_PATIENT(weight, "norm", version, true)
+%DIABETIC_PATIENT(weight, "highBGL", version, false)
+DIABETIC_PATIENT(weight, "highCHO", version, false)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              MAIN FILE END                              %
