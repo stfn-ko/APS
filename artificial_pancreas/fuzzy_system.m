@@ -1,14 +1,14 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                 AP_FIST                                 %
+%                             FUZZY_SYSTEM                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [FIST, CCR, MDI, BGR_R, BGA_R] = AP_FIST(weight_)
+function [FIST, CCR, MDI, BGR_R, BGA_R] = fuzzy_system(patient)
 
     % MAX INSULIN PER DAY
-    MIPD = weight_ * 0.55;
+    MIPD = patient.weight * patient.IRC;
 
     % CARBS COVERAGE RATIO
-    CCR = 500 / MIPD;
+    CCR = patient.ACC / MIPD;
 
     % INSULIN DOSE RANGE
     MDI = [0 1.5];
