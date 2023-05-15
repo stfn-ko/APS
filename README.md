@@ -2,6 +2,13 @@
 
 This is an optimized fuzzy interference system tree controller of artificial pancreas designed for a particular patient.
 
+### TODO
+
+- Finish API and MATLAB connection
+- Figure out how to run on MacOS
+- Finish the report
+- Write run instructions
+
 ### Note
 
 quite an interesting fact is that when a high cho (897g) diet is run on a 42kg patient, the results are still pretty good, but there;s still a lot of instability.
