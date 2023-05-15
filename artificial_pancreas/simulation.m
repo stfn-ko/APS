@@ -1,29 +1,28 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                  NOTES                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %{
 
 %}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                           DIABETIC PATIENT                              %
+%                              SIMULATION                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
+function simulation(patient, diet, version, randomize)
 
-    % INIT FIS TREE
-    [AP, CCR, ~, ~, ~] = AP_FIST(weight_);
+    % INIT FUZZY INTERFERENCE SYSTEM (FIS) TREE
+    [AP, CCR, ~, ~, ~] = fuzzy_system(patient);
 
     % SET PATH
-    version_path = strcat('db/results/', 'v', version_);
-    test_id = strcat(diet_, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
-    path = strcat(version_path, '/', test_id);
+    version_id = strcat('db/results/', 'v', version);
+    test_id = strcat(diet, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
+    path = strcat(version_id, '/', test_id);
     mkdir(path);
 
     % OPEN DB
-    database = strcat('db/diets/', diet_, '.xlsx');
+    database = strcat('db/diets/', diet, '.xlsx');
 
+    % READ DB
     if isstring(database)
         database = readtable(database, "VariableNamingRule", "preserve");
     end
@@ -32,33 +31,35 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
     options = evalfisOptions('NumSamplePoints', 1000);
 
     % CALCULATE TIMESTAMP
-    TS = database.Time(2) - database.Time(1);
+    time_stamp = database.Time(2) - database.Time(1);
 
     % RANDOMIZE test_data(1:3) VALUES
-    if randomize_
+    if randomize
+        %
         database.BGL(1) = rand(1) * (70 - 250) + 250;
         database.BGL(2) = database.BGL(1) + rand(1) * (-8) + 4;
         database.BGL(3) = database.BGL(2) + rand(1) * (-8) + 4;
-        database.BGR(2) = (database.BGL(2) - database.BGL(1)) / TS;
-        database.BGR(3) = (database.BGL(3) - database.BGL(2)) / TS;
-        database.BGA(3) = (database.BGR(3) - database.BGR(2)) / TS;
+        %
+        database.BGR(2) = (database.BGL(2) - database.BGL(1)) / time_stamp;
+        database.BGR(3) = (database.BGL(3) - database.BGL(2)) / time_stamp;
+        %
+        database.BGA(3) = (database.BGR(3) - database.BGR(2)) / time_stamp;
     end
 
-    % TEST FISTREE
+    % TEST FIS TREE
     for i = 3:size(database, 1)
 
         % evaluate fis tree
         eval = evalfis(AP, [database.BGL(i) database.BGR(i) database.BGA(i)], options);
 
         % Logging current insulin dose into databse
-        database.Insulin(i) = eval;
+        database.INSULIN(i) = eval;
 
         % Insulin Absorption Time (between 56 and 126)
         absorption_time = floor((rand(1) * (-70) + 126) / 5);
 
         % Total Insulin Absorbed (mg/dL)
-        total_insulin = database.Insulin(i) * 50;
-
+        total_insulin = database.INSULIN(i) * 50;
         absorption_rate = total_insulin / absorption_time;
 
         for j = i:i + absorption_time - 1
@@ -78,8 +79,10 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
         if i < size(database, 1)
             % add noise
             database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-2) + 1);
-            database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / TS;
-            database.BGA(i + 1) = (database.BGR(i + 1) - database.BGR(i)) / TS;
+            %
+            database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / time_stamp;
+            %
+            database.BGA(i + 1) = (database.BGR(i + 1) - database.BGR(i)) / time_stamp;
         end
 
         % logging Carbs into BGL
@@ -87,7 +90,7 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
             % Total Glucose Absorbed (mg/dL)
             TGA = (database.Carbs(i) / CCR) * 50;
             % TGA normally distributed (mg/dL/min)
-            [ds, CAT] = cho_distribution(TGA);
+            [ds, CAT] = carbs_distribution(TGA);
 
             for j = i:(i + CAT - 1)
 
@@ -104,36 +107,29 @@ function DIABETIC_PATIENT(weight_, diet_, version_, randomize_)
 
         end
 
+        % SEND DATA TO APP
+        %data.BGL = database.BGL(i);
+        %data.BGR = database.BGR(i);
+        %data.AVG = 
+        %data.SD = 
+        %data.GMI = 
+        %data.TIR.high = 
+        %data.TIR.inRange = 
+        % data.TIR.low = 
+
         % pause(1)
     end
-
-    % SUMMARISING RESULTS
-    database.("Patient's weight")(1) = weight_;
-    database.CHO_TOTAL(1) = sum(database.Carbs);
-    database.INSULIN_TOTAL(1) = sum(database.Insulin);
-    database.BGL_GROW_APPROX(1) = database.CHO_TOTAL(1) / CCR * 50;
-    database.PREDICTED_INSULIN_TOTAL(1) = database.CHO_TOTAL(1) / 50;
-
-    database.BGL_NORM_100_120(1) = ...
-        (sum(database.BGL < 120) ...
-        - sum(database.BGL < 100)) ...
-        / size(database, 1) * 100;
-
-    database.BGL_NORM_72_180(1) = ...
-        (sum(database.BGL < 180) ...
-        - sum(database.BGL < 72)) ...
-        / size(database, 1) * 100;
 
     % WRITE TO RESULTS TABLE
     writetable(database, append(path, '/results.xlsx'));
 
     % FIGURES
-    t = 0:minutes(TS):hours((size(database, 1) - 1) / 12);
+    t = 0:minutes(time_stamp):hours((size(database, 1) - 1) / 12);
 
     % - fig
     fig = figure;
     yyaxis right;
-    plot(t, database.Insulin, 'DurationTickFormat', 'hh:mm', Color = "#FFA400"),
+    plot(t, database.INSULIN, 'DurationTickFormat', 'hh:mm', Color = "#FFA400"),
     ylim([0 2]),
     ylabel('Insulin Dose Level (mg/dL)')
     yyaxis left;
