@@ -1,4 +1,4 @@
-function [ds_tr, CAT_] = cho_distribution(TGA_)
+function [ds_tr, CAT_] = carbs_distribution(TGA_)
     
     if TGA_ / 180 > 2.9
         CAT_ = floor(TGA_ / 2.9 / 5);
