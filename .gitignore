@@ -483,4 +483,5 @@ FodyWeavers.xsd
 # JetBrains Rider
 *.sln.iml
 
-user\user.json
+*.json
+artificial_pancreas\db\results
