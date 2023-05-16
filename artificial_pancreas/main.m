@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                  NOTES                                 %
+%                                  NOTES                                  %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 %{
+
 Insulin Goals:
 1) Very Low BG : <54 mg/dL
 2) Low BG :  54-72 mg/dL
@@ -20,35 +20,40 @@ ex) CCR = 500/(0.55*80)
 
 TOTAL BGL INCREASE FROM MEAL = (CHO / CCR) * 50;
 
+GMI = 3.31 + 0.02392 x [mean glucose in mg/dL].
+
+Sampe Standard Deviation = iykyk
+
 To set custom carbs intake (optional):
 @EX: test_data = cho_intake(
-            dbname, 
-            [50 50 50 50 50], 
-            [40 240 440 640 840], 
+            dbname,
+            [50 50 50 50 50],
+            [40 240 440 640 840],
             "overwrite"
         );
 
 To run for all databases
     for i = 1:size(fname,2)
-        DIABETIC_PATIENT(weight, fname(i), version, path(i), randomize)
+        simulation(weight, fname(i), version, path(i), randomize)
     end
+
 %}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                            MAIN FILE START                              %
+%                               MAIN START                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% setup user
-weight = 82;
-version = '11.3';
-randomize = false;
 
 % setup fig display off
 set(0, 'DefaultFigureVisible', 'off')
 
+% setup user
+patient.ACC = 500; % Average Carbs Consumption (daily)
+patient.IRC = 0.55; % Insulin Resistance Coefficent
+patient.weight = 71;
+
 % run sim
-DIABETIC_PATIENT(weight, "norm", version, randomize)
+version = '13.0';
+simulation(patient, "norm", version, false)
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              MAIN FILE END                              %
+%                                 MAIN END                                %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

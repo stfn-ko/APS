@@ -101,6 +101,11 @@ body {
   flex-direction: column;
 }
 
+.AVG .bottom .sd .header,
+.AVG .bottom .gmi .header {
+  font-size: 0.6em;
+}
+
 .AVG .bottom .sd .container .number,
 .AVG .bottom .gmi .container .number {
   font-size: 1em;
