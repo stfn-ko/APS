@@ -11,9 +11,9 @@ const inRangeDataBar = document.getElementById("inRangeDataBar");
 const lowData = document.getElementById("lowData");
 const lowDataBar = document.getElementById("lowDataBar");
 
-async function fetchData() {
+async function fetchDataAndUpdate() {
   try {
-    const response = await fetch('../user.json');
+    const response = await fetch('http://localhost:8080/patient');
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -103,4 +103,6 @@ async function fetchData() {
   }
 }
 
-fetchData();
+fetchDataAndUpdate();
+
+setInterval(fetchDataAndUpdate, 1000)
