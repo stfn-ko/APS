@@ -115,7 +115,7 @@ function simulation(patient, diet, version, randomize)
         %data.GMI = 
         %data.TIR.high = 
         %data.TIR.inRange = 
-        % data.TIR.low = 
+        %data.TIR.low = 
 
         % pause(1)
     end
