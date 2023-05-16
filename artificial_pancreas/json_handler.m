@@ -1,4 +1,7 @@
 function json_handler(data)
+    patient.TimeStamp.initial = data.TimeStamp.initial;
+    patient.TimeStamp.current = data.TimeStamp.current;
+    
     patient.BGL = data.BGL; % blood glucose level
     patient.BGR = data.BGR; % blood glucose rate
     patient.AVG = data.AVG; % average blood glucose level
