@@ -39,7 +39,7 @@ async function fetchData() {
     }
 
     if (data.TimeStamp) {
-      timeStamp.textContent = `${data.TimeStamp} - ${data.TimeStamp}`;
+      timeStamp.textContent = `${data.TimeStamp.initial}  -  ${data.TimeStamp.current}`;
     } else {
       timeStamp.textContent = '--/--/--';
     }
