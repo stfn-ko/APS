@@ -47,7 +47,7 @@ function [FIST, CCR, MDI, BGR_R, BGA_R] = fuzzy_system(patient)
     %
     fPrecalcDose.Inputs(1).MembershipFunctions(3).Name = mf5_lmh(3);
     fPrecalcDose.Inputs(1).MembershipFunctions(3).Type = "gaussmf";
-    fPrecalcDose.Inputs(1).MembershipFunctions(3).Parameters = [20 120];
+    fPrecalcDose.Inputs(1).MembershipFunctions(3).Parameters = [25 125]
     %
     fPrecalcDose.Inputs(1).MembershipFunctions(4).Name = mf5_lmh(4);
     fPrecalcDose.Inputs(1).MembershipFunctions(4).Type = "gaussmf";

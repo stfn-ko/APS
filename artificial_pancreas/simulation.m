@@ -70,7 +70,7 @@ function simulation(patient, diet, version, randomize)
         % logging next BGL, BGR, BGA
         if i < size(database, 1)
             % add noise
-            database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-2) + 1);
+            database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-4) + 2);
             %
             database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / time_step;
             %
@@ -99,7 +99,7 @@ function simulation(patient, diet, version, randomize)
 
         end
 
-        % SEND DATA TO APP
+        % % POST DATA TO API
         data_range = database{1:i, 'BGL'};
         %
         data.TimeStamp.initial.date = string(sim_start_time, 'dd/MM');
@@ -119,7 +119,7 @@ function simulation(patient, diet, version, randomize)
 
         json_handler(data);
 
-        pause(1);
+        pause(2);
     end
 
     % SET PATH
