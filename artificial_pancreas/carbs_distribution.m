@@ -2,48 +2,22 @@
 %                         CARBS_DISTRIBUTION                              %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function [ds_tr, CAT_] = carbs_distribution(TGA_)
-    
-    if TGA_ / 180 > 2.9
-        CAT_ = floor(TGA_ / 2.9 / 5);
-    else
-        while 1
-            % - carbs absorption time (mins / TS)
-            CAT_ = floor(rand(1) * (22 - 50) + 51); %18 36 37
-    
-            if (TGA_ / (CAT_ * 5)) < 2.9
-                break;
-            end
-        end
-    end
-
-    mean = TGA_ / CAT_;
-    hp = CAT_ * 5;
-
-    ds = zeros(1, CAT_);
-
-    if mod(CAT_, 2) == 0
-        darr = (CAT_ - 2);
-        hpm = (CAT_ * 100 - 2 * hp) / darr;
-        ds(CAT_ / 2:CAT_ / 2 + 1) = hp;
-    else
-        darr = (CAT_ - 1);
-        hpm = (CAT_ * 100 - hp) / darr;
-        ds(floor(CAT_ / 2 + 1)) = hp;
-    end
-
-    darr = floor(darr / 4);
-
-    ds(1:darr + 1) = hpm - darr * (darr + 1 - (1:darr + 1));
-    ds(darr + 2:darr * 2 + 1) = hpm + (darr * (1:darr));
-
-    if mod(CAT_, 2) == 0
-        ds(CAT_ / 2 + 1:CAT_) = fliplr(ds(1:CAT_ / 2));
-    else
-        ds(floor(CAT_ / 2) + 2:CAT_) = fliplr(ds(1:floor(CAT_ / 2)));
-    end
-
-    ds_tr(1:CAT_) = mean / 100 * ds(1:CAT_);
+function [distributed_glucose, glucose_absorbtion_time] = carbs_distribution(total_glucose_absorbed)
+    mean = 0;
+    std_dev = 1;
+    step = rand(1) * (0.6) + 2.2;
+    % @Note: since avg carbs absorption rate for a person with 70 kg body weight is 0.73 g/min (https://www.sciencedirect.com/science/article/pii/S1474667017355337?ref=pdf_download&fr=RR-2&rr=7c89ebd149907702)
+    % I adjusted glucose absorption time so that it can't go higher than 1g/min and can't go over 7hrs of digestion. 
+    glucose_absorbtion_time = floor((rand(1) * (84 - total_glucose_absorbed/5)) + total_glucose_absorbed/5);
+        
+    % Generate equally spaced x-values
+    x_values = linspace(-step * std_dev, step * std_dev, glucose_absorbtion_time);
+        
+    % Calculate y-values using the PDF equation
+    y_values = (1 / (std_dev * sqrt(2 * pi))) * exp(-(x_values - mean).^2 / (2 * std_dev^2));
+        
+    % Normalize the y-values to sum up to total_glucose_absorbed
+    distributed_glucose = (y_values / sum(y_values)) * total_glucose_absorbed;
 end
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

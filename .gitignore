@@ -485,3 +485,6 @@ FodyWeavers.xsd
 
 # Ignore test results
 artificial_pancreas\db\results
+BGL_INSULIN_24hr.png
+BGL_24hr.png
+results.xlsx
