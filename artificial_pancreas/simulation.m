@@ -82,9 +82,9 @@ function simulation(patient, diet, version, randomize)
             % Total Glucose Absorbed (mg/dL)
             TGA = (database.Carbs(i) / CCR) * 50;
             % TGA normally distributed (mg/dL/min)
-            [ds, CAT] = carbs_distribution(TGA);
+            [ds, carbs_absorbtion_time] = carbs_distribution(TGA);
 
-            for j = i:(i + CAT - 1)
+            for j = i:(i + carbs_absorbtion_time - 1)
 
                 if j < size(database, 1)
 
