@@ -70,7 +70,7 @@ function simulation(patient, diet, version, randomize)
         % logging next BGL, BGR, BGA
         if i < size(database, 1)
             % add noise
-            database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-8) + 4);
+            database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-4) + 2);
             %
             database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / time_step;
             %
