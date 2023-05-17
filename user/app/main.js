@@ -29,7 +29,7 @@ async function fetchDataAndUpdate() {
 
     if (data.BGR && !isNaN(data.BGR)) {
       bgRate.style.borderRadius = `${50 - 25 * Math.abs(data.BGR)}%`;
-      if (data.BGR < 0) {
+      if (data.BGR > 0) {
         bgRate.style.transform = 'rotateZ(-45deg)';
       } else {
         bgRate.style.transform = 'rotateZ(135deg)';
@@ -39,7 +39,11 @@ async function fetchDataAndUpdate() {
     }
 
     if (data.TimeStamp) {
-      timeStamp.textContent = `${data.TimeStamp.initial}  -  ${data.TimeStamp.current}`;
+      if (data.TimeStamp.initial.date == data.TimeStamp.current.date) {
+        timeStamp.textContent = `${data.TimeStamp.initial.date} | ${data.TimeStamp.initial.time}  -  ${data.TimeStamp.current.time}`;
+      } else {
+        timeStamp.textContent = `${data.TimeStamp.initial.date} - ${data.TimeStamp.current.date}  |  ${data.TimeStamp.current.time}`;
+      }
     } else {
       timeStamp.textContent = '--/--/--';
     }
