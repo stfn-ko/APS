@@ -11,9 +11,9 @@ const inRangeDataBar = document.getElementById("inRangeDataBar");
 const lowData = document.getElementById("lowData");
 const lowDataBar = document.getElementById("lowDataBar");
 
-async function fetchData() {
+async function fetchDataAndUpdate() {
   try {
-    const response = await fetch('../user.json');
+    const response = await fetch('http://localhost:8080/patient');
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
@@ -29,7 +29,7 @@ async function fetchData() {
 
     if (data.BGR && !isNaN(data.BGR)) {
       bgRate.style.borderRadius = `${50 - 25 * Math.abs(data.BGR)}%`;
-      if (data.BGR < 0) {
+      if (data.BGR > 0) {
         bgRate.style.transform = 'rotateZ(-45deg)';
       } else {
         bgRate.style.transform = 'rotateZ(135deg)';
@@ -39,7 +39,11 @@ async function fetchData() {
     }
 
     if (data.TimeStamp) {
-      timeStamp.textContent = `${data.TimeStamp} - ${data.TimeStamp}`;
+      if (data.TimeStamp.initial.date == data.TimeStamp.current.date) {
+        timeStamp.textContent = `${data.TimeStamp.initial.date} | ${data.TimeStamp.initial.time}  -  ${data.TimeStamp.current.time}`;
+      } else {
+        timeStamp.textContent = `${data.TimeStamp.initial.date} - ${data.TimeStamp.current.date}  |  ${data.TimeStamp.current.time}`;
+      }
     } else {
       timeStamp.textContent = '--/--/--';
     }
@@ -103,4 +107,6 @@ async function fetchData() {
   }
 }
 
-fetchData();
+fetchDataAndUpdate();
+
+setInterval(fetchDataAndUpdate, 1000)

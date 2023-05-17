@@ -1,4 +1,14 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             JSON_HANDLER                                %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 function json_handler(data)
+    patient.TimeStamp.initial.date = data.TimeStamp.initial.date;
+    patient.TimeStamp.initial.time = data.TimeStamp.initial.time;
+    %
+    patient.TimeStamp.current.date = data.TimeStamp.current.date;
+    patient.TimeStamp.current.time = data.TimeStamp.current.time;
+    %
     patient.BGL = data.BGL; % blood glucose level
     patient.BGR = data.BGR; % blood glucose rate
     patient.AVG = data.AVG; % average blood glucose level
@@ -12,3 +22,7 @@ function json_handler(data)
 
     webwrite(patient_chn, patient);
 end
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                             END OF FUNCTION                             %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

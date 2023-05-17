@@ -1,8 +1,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                              CHO_INTAKE                                 %
+%                            CARBS_INTAKE                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-function carbs_intake = cho_intake(table_name, cho_arr_, time_arr_, overwrite_)
+function carbs_intake = carbs_intake(table_name, cho_arr_, time_arr_, overwrite_)
 
     % TABLE INIT
     table_ = readtable(table_name, "VariableNamingRule", "preserve");

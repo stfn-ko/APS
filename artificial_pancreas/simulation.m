@@ -1,10 +1,4 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%                                  NOTES                                 %
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%{
-
-%}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                              SIMULATION                                 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -12,12 +6,6 @@ function simulation(patient, diet, version, randomize)
 
     % INIT FUZZY INTERFERENCE SYSTEM (FIS) TREE
     [AP, CCR, ~, ~, ~] = fuzzy_system(patient);
-
-    % SET PATH
-    version_id = strcat('db/results/', 'v', version);
-    test_id = strcat(diet, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
-    path = strcat(version_id, '/', test_id);
-    mkdir(path);
 
     % OPEN DB
     database = strcat('db/diets/', diet, '.xlsx');
@@ -30,8 +18,12 @@ function simulation(patient, diet, version, randomize)
     % EVALUATE FIS
     options = evalfisOptions('NumSamplePoints', 1000);
 
-    % CALCULATE TIMESTAMP
-    time_stamp = database.Time(2) - database.Time(1);
+    % CALCULATE TIME STEP
+    time_step = database.Time(2) - database.Time(1);
+    
+    % GENERATE STARTING TIME STAMP
+    sim_start_time = datetime('now');
+
 
     % RANDOMIZE test_data(1:3) VALUES
     if randomize
@@ -40,10 +32,10 @@ function simulation(patient, diet, version, randomize)
         database.BGL(2) = database.BGL(1) + rand(1) * (-8) + 4;
         database.BGL(3) = database.BGL(2) + rand(1) * (-8) + 4;
         %
-        database.BGR(2) = (database.BGL(2) - database.BGL(1)) / time_stamp;
-        database.BGR(3) = (database.BGL(3) - database.BGL(2)) / time_stamp;
+        database.BGR(2) = (database.BGL(2) - database.BGL(1)) / time_step;
+        database.BGR(3) = (database.BGL(3) - database.BGL(2)) / time_step;
         %
-        database.BGA(3) = (database.BGR(3) - database.BGR(2)) / time_stamp;
+        database.BGA(3) = (database.BGR(3) - database.BGR(2)) / time_step;
     end
 
     % TEST FIS TREE
@@ -80,9 +72,9 @@ function simulation(patient, diet, version, randomize)
             % add noise
             database.BGL(i + 1) = database.BGL(i + 1) + database.BGL(i) + (rand(1) * (-2) + 1);
             %
-            database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / time_stamp;
+            database.BGR(i + 1) = (database.BGL(i + 1) - database.BGL(i)) / time_step;
             %
-            database.BGA(i + 1) = (database.BGR(i + 1) - database.BGR(i)) / time_stamp;
+            database.BGA(i + 1) = (database.BGR(i + 1) - database.BGR(i)) / time_step;
         end
 
         % logging Carbs into BGL
@@ -108,23 +100,39 @@ function simulation(patient, diet, version, randomize)
         end
 
         % SEND DATA TO APP
-        %data.BGL = database.BGL(i);
-        %data.BGR = database.BGR(i);
-        %data.AVG = 
-        %data.SD = 
-        %data.GMI = 
-        %data.TIR.high = 
-        %data.TIR.inRange = 
-        % data.TIR.low = 
+        data_range = database{1:i, 'BGL'};
+        %
+        data.TimeStamp.initial.date = string(sim_start_time, 'dd/MM');
+        data.TimeStamp.initial.time = string(sim_start_time, 'HH:mm');
+        %
+        data.TimeStamp.current.date = string(sim_start_time + minutes(i * 5), 'dd/MM');
+        data.TimeStamp.current.time = string(sim_start_time + minutes(i * 5), 'HH:mm');
+        %
+        data.BGL = round(database.BGL(i));
+        data.BGR = database.BGR(i);
+        data.AVG = floor(mean(data_range) * 10) / 10;
+        data.SD = floor(std(data_range, 1) * 10) / 10;
+        data.GMI = floor((3.31 + (0.02392 * data.AVG)) * 10) / 10;
+        data.TIR.high = floor(sum(data_range > 180) / i * 100);
+        data.TIR.inRange = floor(sum(data_range >= 70 & data_range <= 180) / i * 100);
+        data.TIR.low = floor(sum(data_range < 70) / i * 100);
 
-        % pause(1)
+        json_handler(data);
+
+        pause(1);
     end
 
+    % SET PATH
+    version_id = strcat('db/results/', 'v', version);
+    test_id = strcat(diet, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
+    path = strcat(version_id, '/', test_id);
+    mkdir(path);
+    
     % WRITE TO RESULTS TABLE
     writetable(database, append(path, '/results.xlsx'));
 
     % FIGURES
-    t = 0:minutes(time_stamp):hours((size(database, 1) - 1) / 12);
+    t = 0:minutes(time_step):hours((size(database, 1) - 1) / 12);
 
     % - fig
     fig = figure;
