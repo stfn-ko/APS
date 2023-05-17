@@ -51,8 +51,10 @@ patient.IRC = 0.55; % Insulin Resistance Coefficent
 patient.weight = 71;
 
 % run sim
-version = '13.0';
-simulation(patient, "norm", version, false)
+version = '16.0';
+simulation(patient, "norm", version, false);
+simulation(patient, "highBGL", version, false);
+simulation(patient, "highCHO", version, false);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %                                 MAIN END                                %
