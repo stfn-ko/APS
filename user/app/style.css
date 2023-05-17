@@ -12,6 +12,27 @@ body {
   flex-direction: column;
 }
 
+#bgRate {
+  transition: ease-in-out 0.5s;
+}
+
+#highDataBar,
+#inRangeDataBar,
+#lowDataBar {
+  transition: width ease-in-out 0.5s;
+}
+
+#bglData,
+#timeStamp,
+#avgData,
+#sdData,
+#gmiData,
+#highData,
+#inRangeData,
+#lowData {
+  transition: opacity 0.5s ease-in-out;
+}
+
 .BGL {
   margin: 1.5em;
 }
