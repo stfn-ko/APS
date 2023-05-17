@@ -100,26 +100,26 @@ function simulation(patient, diet, version, randomize)
         end
 
         % % POST DATA TO API
-        % data_range = database{1:i, 'BGL'};
-        % %
-        % data.TimeStamp.initial.date = string(sim_start_time, 'dd/MM');
-        % data.TimeStamp.initial.time = string(sim_start_time, 'HH:mm');
-        % %
-        % data.TimeStamp.current.date = string(sim_start_time + minutes(i * 5), 'dd/MM');
-        % data.TimeStamp.current.time = string(sim_start_time + minutes(i * 5), 'HH:mm');
-        % %
-        % data.BGL = round(database.BGL(i));
-        % data.BGR = database.BGR(i);
-        % data.AVG = floor(mean(data_range) * 10) / 10;
-        % data.SD = floor(std(data_range, 1) * 10) / 10;
-        % data.GMI = floor((3.31 + (0.02392 * data.AVG)) * 10) / 10;
-        % data.TIR.high = floor(sum(data_range > 180) / i * 100);
-        % data.TIR.inRange = floor(sum(data_range >= 70 & data_range <= 180) / i * 100);
-        % data.TIR.low = floor(sum(data_range < 70) / i * 100);
+        data_range = database{1:i, 'BGL'};
+        %
+        data.TimeStamp.initial.date = string(sim_start_time, 'dd/MM');
+        data.TimeStamp.initial.time = string(sim_start_time, 'HH:mm');
+        %
+        data.TimeStamp.current.date = string(sim_start_time + minutes(i * 5), 'dd/MM');
+        data.TimeStamp.current.time = string(sim_start_time + minutes(i * 5), 'HH:mm');
+        %
+        data.BGL = round(database.BGL(i));
+        data.BGR = database.BGR(i);
+        data.AVG = floor(mean(data_range) * 10) / 10;
+        data.SD = floor(std(data_range, 1) * 10) / 10;
+        data.GMI = floor((3.31 + (0.02392 * data.AVG)) * 10) / 10;
+        data.TIR.high = floor(sum(data_range > 180) / i * 100);
+        data.TIR.inRange = floor(sum(data_range >= 70 & data_range <= 180) / i * 100);
+        data.TIR.low = floor(sum(data_range < 70) / i * 100);
 
-        % json_handler(data);
+        json_handler(data);
 
-        % pause(1);
+        pause(2);
     end
 
     % SET PATH
