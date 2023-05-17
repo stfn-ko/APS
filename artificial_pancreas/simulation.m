@@ -7,12 +7,6 @@ function simulation(patient, diet, version, randomize)
     % INIT FUZZY INTERFERENCE SYSTEM (FIS) TREE
     [AP, CCR, ~, ~, ~] = fuzzy_system(patient);
 
-    % SET PATH
-    version_id = strcat('db/results/', 'v', version);
-    test_id = strcat(diet, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
-    path = strcat(version_id, '/', test_id);
-    mkdir(path);
-
     % OPEN DB
     database = strcat('db/diets/', diet, '.xlsx');
 
@@ -107,11 +101,15 @@ function simulation(patient, diet, version, randomize)
 
         % SEND DATA TO APP
         data_range = database{1:i, 'BGL'};
-
-        data.TimeStamp.initial = string(sim_start_time, 'dd/MM | HH:mm');
-        data.TimeStamp.current = string(sim_start_time + minutes(i * 5), 'dd/MM | HH:mm');
+        %
+        data.TimeStamp.initial.date = string(sim_start_time, 'dd/MM');
+        data.TimeStamp.initial.time = string(sim_start_time, 'HH:mm');
+        %
+        data.TimeStamp.current.date = string(sim_start_time + minutes(i * 5), 'dd/MM');
+        data.TimeStamp.current.time = string(sim_start_time + minutes(i * 5), 'HH:mm');
+        %
         data.BGL = round(database.BGL(i));
-        data.BGR = round(database.BGR(i));
+        data.BGR = database.BGR(i);
         data.AVG = floor(mean(data_range) * 10) / 10;
         data.SD = floor(std(data_range, 1) * 10) / 10;
         data.GMI = floor((3.31 + (0.02392 * data.AVG)) * 10) / 10;
@@ -121,9 +119,15 @@ function simulation(patient, diet, version, randomize)
 
         json_handler(data);
 
-        pause(0.5);
+        pause(1);
     end
 
+    % SET PATH
+    version_id = strcat('db/results/', 'v', version);
+    test_id = strcat(diet, '_', char(randi([48 57], 1, 3)), char(randi([65 90], 1, 2)));
+    path = strcat(version_id, '/', test_id);
+    mkdir(path);
+    
     % WRITE TO RESULTS TABLE
     writetable(database, append(path, '/results.xlsx'));
 
