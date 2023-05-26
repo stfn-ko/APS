@@ -3,6 +3,7 @@ My name is stfn, I am a thirf year student at DMU, My degree is in AI Engineerin
 Throughout the years of studyin at DMU I came across lots of interesting projects and this year 
 I was given an oportunity to research and develop something on my own. I have always been facinated
 by prostcetics and human body augmentation with technology in general. 
+
 #2 Motivation
 When I was picking a theme for this dissertation I initially thought of an AI that would identify 
 cancerous nevis based on its telesocpy, this problem is very related to me. At the time it just 
@@ -14,6 +15,7 @@ quite a lot of diabetic friends, which is unfortunately more of statistical thin
 of mine. As I dug more into this topic, I realized that there was so little research available
 on how to actually create an artificial pancreas, how to simulate blood glucose levels based 
 on nutrition, etc. 
+
 #3 Story
 Diabetes is one of the most expensive chronic diseases in the world. In the US the diabetes has been
 the most expensive chronical disease since 2017. This presentation is not about capitalism blame, so
@@ -24,6 +26,7 @@ Why treat symptoms when you should treat the disease? The second perspective is 
 imagine a child born with T1D, apart from the struggles parents go through raising a child, there is
 a chronical condition that is very expensive and has to be treated. When the kid grows up it is now 
 up to them to control the T1D. This sounds like a huge effort.
+
 #4 What is what?
 To better understand the rest of the presentstion, let's get you familiar with the type 1 diabetes.
 the full name diabetes mellitus originates from greek diabetes - to pass through and latin melitus -
@@ -34,10 +37,102 @@ produce insulin, the B-cells. This results in body's inability to adequately han
 Having blood glucose levels (BGL) too high for too long can result in blindness and sometimes can even lead
 to body parts amputation if not treated. On the other hand hypoglycemia is a condition when the BGL drops too 
 low. Patients may expirience similar symptoms like blurried vision, weakness, dizziness etc.
+
 #5 Taking care of T1D
 1. Take blood sample 2.Read BGl 3. Administer insulin
 obviously, T1D patients don't constantly take insulin shots, They mainly do it before food and the process 
 of insulin dose calculation basically consits of approximating the amount of carbs in their food and then 
 multiplying it by their CCR, which stands for carbohydrates coverage raio. The amount of carbs one unit of 
 insulin can cover. Sounds really tideous, this is why people have been trying to invent artificial pancreas.
+
 #6 The inconvinience  
+So, eventually scientists came up with CGM's, which stand for continuous glucose monitor. It is a device that 
+T1D patient inserts into his skin in order for it to read patient's blood glucose level and send it to the app
+so that the patient can take a look and administer insulin accordingly. Later scientists came up with a special 
+insulin pump, you enter the name of the food that you ate and it inserts some amount of insulin accrodnigly,
+then you can check the BGL with CGM. This is still a very tideous and unnecessarily complex procedure  to do 
+4/5 times a  day, every single day of your life.
+
+#7 The solution
+Closed-loop artificial pancreas system in one of the possible solutions. The main idea is to get rid of the
+middle man. Instead of patient measuring the BGL from CGM and then approximating CH intake and then inserting inuslin
+waiting for the results and checking with the CGM again the closed loop artificial pancreas is a more  of autonomous 
+solution. CGM communicates directly with Inuslin Pump (IP) and the AI within IP decides how much insulin to administer.
+
+#8 The concept
+At the pricetag of $699 you can get yourself a pack of Dexcom 6 CGMs. These will last you around 30 days. You might think
+that the reason that such sensor lasts only one month is because the sensor gets bad/noisy. No,  the sole reason that 
+a $233 CGM works only for 30 days is its battery's capacity. Even though, I did not produce a working CGM for this research,
+I came up with a concept of a CGM that would have a rechargable battery. <picture>   
+
+#9 Backend system
+
+#10 Intuition for Carbs Distribution:
+Imagine you have a bag of sugar (glucose) that you want to distribute in your body over a certain period of time. You know 
+that the sugar should be absorbed gradually and not all at once. How can you figure out the best way to distribute it?
+
+First, you might think about the average rate at which sugar is absorbed in the body. You research and find that, on average,
+a person with a body weight of 70 kg absorbs glucose at a rate of 0.73 grams per minute. This gives you a starting point.
+
+Next, you realize that you need to determine the duration over which the sugar should be absorbed. You don't want it to take 
+too long or happen too quickly. So, you decide to randomize this duration within certain limits.
+
+To do this, you generate a random number that ranges from 0 to 1. You then multiply this number by 0.6 and add 2.2 to ensure the
+duration falls within a reasonable range. This random duration will represent the time it takes for the glucose to be fully absorbed 
+in your body.
+
+Now, you have the duration, but you need to figure out how to distribute the glucose during that time. You want the distribution to be
+smooth and gradual. To achieve this, you use a mathematical concept called the Probability Density Function (PDF). You create a series 
+of equally spaced points along the duration of glucose absorption. These points represent different time intervals. Then, you calculate
+the corresponding y-values for each point using the PDF equation. The PDF equation helps you determine the shape of the distribution curve.
+
+It ensures that the glucose is gradually absorbed, with a peak and tapering off on either side. You use standard deviation (std_dev) and mean 
+values to control the shape of the curve.
+
+To make sure that the total amount of distributed glucose matches the original amount, you normalize the y-values. This means scaling them in
+such a way that they add up to the total amount of glucose you started with. Finally, you return the normalized glucose distribution and the
+absorption time as the solution.
+
+#11 FIS
+
+
+# API
+CORS: This change allows for secure interaction between the API and client-side components. 
+Cross-Origin Resource Sharing. It is a mechanism that allows web browsers to securely make 
+cross-origin requests to web servers
+
+In the context of web development, an origin refers to the combination of a domain, protocol, 
+and port. For example, "localhost:5500" and "localhost:8080" are considered different origins.
+
+the problem with the initial approach was that the recieved data was stored in a JSON field
+that any program within the system could access. This is far from perfect and raises certain
+security problems. With the new approach not only the system became faster but also more secure 
+
+
+
+
+### POSSIBLE QA
+
+# PDF
+(x_values - mean) calculates the difference between each x-value (representing time intervals) and the mean. This measures how far each x-value 
+is from the center of the distribution. (x_values - mean).^2 squares each difference value obtained in the previous step. Squaring ensures that 
+all values are positive and emphasizes larger differences. -(x_values - mean).^2 / (2 * std_dev^2) divides the squared differences by 2 * std_dev^2. 
+Dividing by the standard deviation squared controls the spread or width of the distribution curve. exp(-(x_values - mean).^2 / (2 * std_dev^2)) 
+applies the exponential function to the values obtained in the previous step. The exponential function decreases rapidly as the values become more 
+negative, resulting in a bell-shaped curve. (1 / (std_dev * sqrt(2 * pi))) is a scaling factor that ensures the area under the curve sums up to 1. 
+It normalizes the curve and makes it a valid probability distribution. By plugging different x-values (representing time intervals) into this equation, 
+you obtain corresponding y-values. These y-values represent the probability or density of glucose distribution at each time interval. The curve obtained 
+by connecting these points forms the glucose distribution pattern over time. In summary, the PDF equation uses the mean, standard deviation, and x-values 
+to calculate the corresponding y-values, representing the probability density of glucose distribution at different time intervals. The equation ensures 
+a smooth and realistic distribution curve by controlling the shape, width, and normalization of the curve.
+
+# FISTREE
+Amount of rules grow exponentially.
+
+Using the FIST approach provides a way to model more complex decision-making processes by breaking them down into smaller, interconnected fuzzy systems. 
+It allows the integration of different fuzzy rules and membership functions to handle multiple inputs and outputs, resulting in a more comprehensive 
+and flexible solution.
+
+Linguistic representation: Fuzzy logic allows the use of linguistic variables and terms, which can closely match human reasoning and decision-making.
+Instead of relying solely on crisp numerical values, fuzzy logic permits the use of linguistic terms like "high," "medium," or "low" to describe variables,
+making the system more intuitive and interpretable.
