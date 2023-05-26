@@ -7,10 +7,9 @@ by prostcetics and human body augmentation with technology in general.
 #2 Motivation
 When I was picking a theme for this dissertation I initially thought of an AI that would identify 
 cancerous nevis based on its telesocpy, this problem is very related to me. At the time it just 
-happened to be so that I was in Dr Khuman's Fuzzy Logic class, which concentrates on a field of
+happened to be so that I was in Fuzzy Logic class, which concentrates on a field of
 AI that allows for uncertainty and imprecision in decision-making. The aplications of this technology
-is vast, since I was once again free to pick a fuzzy system to develop, I decided to get into 
-fuzzy controllers and as a result discovered artificial pancreas systems to myself. I have 
+is vas. I decided to get into fuzzy controllers and as a result discovered artificial pancreas systems to myself. I have 
 quite a lot of diabetic friends, which is unfortunately more of statistical thing than a choice 
 of mine. As I dug more into this topic, I realized that there was so little research available
 on how to actually create an artificial pancreas, how to simulate blood glucose levels based 
@@ -18,8 +17,7 @@ on nutrition, etc.
 
 #3 Story
 Diabetes is one of the most expensive chronic diseases in the world. In the US the diabetes has been
-the most expensive chronical disease since 2017. This presentation is not about capitalism blame, so
-moving on to -> I decided to further investigate into the world of diabetes and eventually picked it 
+the most expensive chronical disease since 2017. I decided to further investigate into the world of diabetes and eventually picked it 
 as the development project. The motivation for this research can be explained through two perspectives:
 the first one is why even bother developing such system if doctors will eventually come up with a cure?
 Why treat symptoms when you should treat the disease? The second perspective is a lot more brutal,
@@ -30,7 +28,10 @@ up to them to control the T1D. This sounds like a huge effort.
 #4 What is what?
 To better understand the rest of the presentstion, let's get you familiar with the type 1 diabetes.
 the full name diabetes mellitus originates from greek diabetes - to pass through and latin melitus -
-sweet. It is an auotimmune disease that is what we think is caused by a virus. T-cells are like the 
+sweet. 
+
+# What is whAT?
+It is an auotimmune disease that is what we think is caused by a virus. T-cells are like the 
 soldiers of our immune system. They help identify and fight off harmful invaders like bacteria or viruses. 
 In the case of type 1 diabetes, some T-cells get confused and start attacking the cells in the pancreas that 
 produce insulin, the B-cells. This results in body's inability to adequately handle blood glucose.
@@ -47,13 +48,15 @@ insulin can cover. Sounds really tideous, this is why people have been trying to
 
 #6 The inconvinience  
 So, eventually scientists came up with CGM's, which stand for continuous glucose monitor. It is a device that 
-T1D patient inserts into his skin in order for it to read patient's blood glucose level and send it to the app
+T1D patient inserts into his skin in order for it to read patient's blood glucose level and send it to a device
 so that the patient can take a look and administer insulin accordingly. Later scientists came up with a special 
 insulin pump, you enter the name of the food that you ate and it inserts some amount of insulin accrodnigly,
 then you can check the BGL with CGM. This is still a very tideous and unnecessarily complex procedure  to do 
-4/5 times a  day, every single day of your life.
+4/5 times a  day, every single day of your life. An open-loop artificial pancreas is a type of medical device 
+designed to help people with type 1 diabetes manage their BGL. It's called "open-loop" because it doesn't have a 
+feedback mechanism to automatically adjust insulin delivery based on real-time glucose levels.
 
-#7 The solution
+#6 The solution
 Closed-loop artificial pancreas system in one of the possible solutions. The main idea is to get rid of the
 middle man. Instead of patient measuring the BGL from CGM and then approximating CH intake and then inserting inuslin
 waiting for the results and checking with the CGM again the closed loop artificial pancreas is a more  of autonomous 
@@ -65,7 +68,8 @@ that the reason that such sensor lasts only one month is because the sensor gets
 a $233 CGM works only for 30 days is its battery's capacity. Even though, I did not produce a working CGM for this research,
 I came up with a concept of a CGM that would have a rechargable battery. <picture>   
 
-#9 Backend system
+#9 FIS
+it takes patient's avg carbs consumption, insulin resistance coefficent, weight
 
 #10 Intuition for Carbs Distribution:
 Imagine you have a bag of sugar (glucose) that you want to distribute in your body over a certain period of time. You know 
@@ -93,7 +97,9 @@ To make sure that the total amount of distributed glucose matches the original a
 such a way that they add up to the total amount of glucose you started with. Finally, you return the normalized glucose distribution and the
 absorption time as the solution.
 
-#11 FIS
+
+#11 Backend system
+Simulation takes patient's weight, avg carbs Consumption and insulin resistance coefficent
 
 
 # API
