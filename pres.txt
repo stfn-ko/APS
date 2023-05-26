@@ -1,0 +1,43 @@
+#1 Introduction
+My name is stfn, I am a thirf year student at DMU, My degree is in AI Engineering and robotics. 
+Throughout the years of studyin at DMU I came across lots of interesting projects and this year 
+I was given an oportunity to research and develop something on my own. I have always been facinated
+by prostcetics and human body augmentation with technology in general. 
+#2 Motivation
+When I was picking a theme for this dissertation I initially thought of an AI that would identify 
+cancerous nevis based on its telesocpy, this problem is very related to me. At the time it just 
+happened to be so that I was in Dr Khuman's Fuzzy Logic class, which concentrates on a field of
+AI that allows for uncertainty and imprecision in decision-making. The aplications of this technology
+is vast, since I was once again free to pick a fuzzy system to develop, I decided to get into 
+fuzzy controllers and as a result discovered artificial pancreas systems to myself. I have 
+quite a lot of diabetic friends, which is unfortunately more of statistical thing than a choice 
+of mine. As I dug more into this topic, I realized that there was so little research available
+on how to actually create an artificial pancreas, how to simulate blood glucose levels based 
+on nutrition, etc. 
+#3 Story
+Diabetes is one of the most expensive chronic diseases in the world. In the US the diabetes has been
+the most expensive chronical disease since 2017. This presentation is not about capitalism blame, so
+moving on to -> I decided to further investigate into the world of diabetes and eventually picked it 
+as the development project. The motivation for this research can be explained through two perspectives:
+the first one is why even bother developing such system if doctors will eventually come up with a cure?
+Why treat symptoms when you should treat the disease? The second perspective is a lot more brutal,
+imagine a child born with T1D, apart from the struggles parents go through raising a child, there is
+a chronical condition that is very expensive and has to be treated. When the kid grows up it is now 
+up to them to control the T1D. This sounds like a huge effort.
+#4 What is what?
+To better understand the rest of the presentstion, let's get you familiar with the type 1 diabetes.
+the full name diabetes mellitus originates from greek diabetes - to pass through and latin melitus -
+sweet. It is an auotimmune disease that is what we think is caused by a virus. T-cells are like the 
+soldiers of our immune system. They help identify and fight off harmful invaders like bacteria or viruses. 
+In the case of type 1 diabetes, some T-cells get confused and start attacking the cells in the pancreas that 
+produce insulin, the B-cells. This results in body's inability to adequately handle blood glucose.
+Having blood glucose levels (BGL) too high for too long can result in blindness and sometimes can even lead
+to body parts amputation if not treated. On the other hand hypoglycemia is a condition when the BGL drops too 
+low. Patients may expirience similar symptoms like blurried vision, weakness, dizziness etc.
+#5 Taking care of T1D
+1. Take blood sample 2.Read BGl 3. Administer insulin
+obviously, T1D patients don't constantly take insulin shots, They mainly do it before food and the process 
+of insulin dose calculation basically consits of approximating the amount of carbs in their food and then 
+multiplying it by their CCR, which stands for carbohydrates coverage raio. The amount of carbs one unit of 
+insulin can cover. Sounds really tideous, this is why people have been trying to invent artificial pancreas.
+#6 The inconvinience  
